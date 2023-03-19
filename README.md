@@ -9,3 +9,6 @@ Windows RT 8.1: https://protobetatest.com/softwarerepository/9600.17328.140827-1
 1. Redmi Note 8
 2. Poco F1
 
+# Status
+[Redmi Note 8](https://github.com/vicenteicc2008/edk2-woa32-arm64)
+[Poco F1](https://github.com/vicenteicc2008/edk2-woa32-arm64)
