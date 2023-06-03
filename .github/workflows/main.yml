@@ -1,0 +1,34 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Update APT sources
+      run: sudo apt update
+    
+    - name: Install dependencies
+      run: sudo apt install build-essential crossbuild-essential-armhf uuid-dev iasl git nasm python3-distutils
+    
+    - name: Create EDK2 workspace
+      run: mkdir /home/runner/work/EDK2WorkDir
+      
+    - name: clone edk2-ginkgo
+      run: |
+        cd /home/runner/work/EDK2WorkDir/
+        git clone https://github.com/vicenteicc2008/edk2-woa32-arm64.git
+        cd edk2-woa32-arm64
+        ./ci-build.sh
+    - uses: actions/upload-artifact@v3
+      with:
+       name: boot-ginkgo.img
+       path: /home/runner/work/EDK2WorkDir/boot-ginkgo.img
