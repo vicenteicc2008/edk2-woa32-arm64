@@ -31,7 +31,7 @@ jobs:
         git clone https://github.com/tianocore/edk2-platforms.git
         export PACKAGES_PATH=$PWD/../edk2:$PWD/../edk2-platforms:$PWD
         export WORKSPACE=$PWD/workspace
-        . ../edk2/edksetup.sh
+        . edk2/edksetup.sh
         GCC5_AARCH64_PREFIX=aarch64-linux-gnu- build -s -n 0 -a AARCH64 -t GCC5 -p RedmiNote8Pkg/RedmiNote8Pkg.dsc
         gzip -c < workspace/Build/RedmiNote8Pkg/DEBUG_GCC5/FV/REDMINOTE8PKG_UEFI.fd >uefi_image
         cat ginkgo.dtb >>uefi_image
