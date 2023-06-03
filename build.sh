@@ -6,4 +6,4 @@ set -e
 GCC5_AARCH64_PREFIX=aarch64-linux-gnu- build -s -n 0 -a AARCH64 -t GCC5 -p RedmiNote8Pkg/RedmiNote8Pkg.dsc
 gzip -c < workspace/Build/RedmiNote8Pkg/DEBUG_GCC5/FV/REDMINOTE8PKG_UEFI.fd >uefi_image
 cat ginkgo.dtb >>uefi_image
-abootimg --create uefi.img -k uefi_image -r ramdisk-null -f bootimg.cfg
+abootimg --create boot-ginkgo.img -k uefi_image -r ramdisk-null -f bootimg.cfg
