@@ -17,17 +17,26 @@ jobs:
       run: sudo apt update
     
     - name: Install dependencies
-      run: sudo apt install build-essential crossbuild-essential-armhf uuid-dev iasl git nasm python3-distutils
+      run: sudo apt install build-essential uuid-dev iasl git nasm python3-distutils gcc-aarch64-linux-gnu bc
     
     - name: Create EDK2 workspace
       run: mkdir /home/runner/work/EDK2WorkDir
       
-    - name: clone edk2-ginkgo
+    - name: Build edk2-ginkgo
       run: |
         cd /home/runner/work/EDK2WorkDir/
         git clone https://github.com/vicenteicc2008/edk2-woa32-arm64.git
         cd edk2-woa32-arm64
-        ./ci-build.sh
+        git clone https://github.com/Tianocore/edk2.git --recursive
+        git clone https://github.com/tianocore/edk2-platforms.git
+        export PACKAGES_PATH=$PWD/../edk2:$PWD/../edk2-platforms:$PWD
+        export WORKSPACE=$PWD/workspace
+        . ../edk2/edksetup.sh
+        GCC5_AARCH64_PREFIX=aarch64-linux-gnu- build -s -n 0 -a AARCH64 -t GCC5 -p RedmiNote8Pkg/RedmiNote8Pkg.dsc
+        gzip -c < workspace/Build/RedmiNote8Pkg/DEBUG_GCC5/FV/REDMINOTE8PKG_UEFI.fd >uefi_image
+        cat ginkgo.dtb >>uefi_image
+        abootimg --create boot-ginkgo.img -k uefi_image -r ramdisk-null -f bootimg.cfg
+        
     - uses: actions/upload-artifact@v3
       with:
        name: boot-ginkgo.img
